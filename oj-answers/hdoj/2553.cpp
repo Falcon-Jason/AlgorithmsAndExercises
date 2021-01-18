@@ -2,41 +2,33 @@
 using namespace std;
 
 constexpr int MAX_SIZE = 100;
-int answer[MAX_SIZE];
+int board[MAX_SIZE];
+int count[MAX_SIZE];
 
 void print_answers(int size);
 void search(int size, int lineIndex = 0);
 
 int main() {
+    for (int i = 1; i <= 10; i++) { search(i); }
     int size;
-    cin >> size;
-    search(size);
+    while (cin >> size && size != 0) { cout << count[size] << endl; }
 }
 
 bool available(int m, int n) {
     for (int i = 0; i < m; i++)
-        if (answer[i] == n || i + answer[i] == m + n || i - answer[i] == m - n)
+        if (board[i] == n || i + board[i] == m + n || i - board[i] == m - n)
             return false;
     return true;
 }
 
 void search(int size, int lineIndex) {
     if (lineIndex >= size) {
-        print_answers(size);
+        count[size]++;
     }
     for (int i = 0; i < size; i++) {
         if (available(lineIndex, i)) {
-            answer[lineIndex] = i;
+            board[lineIndex] = i;
             search(size, lineIndex + 1);
         }
     }
-}
-
-void print_answers(int size) {
-    static int count = 0;
-    cout << ++count << ":";
-    for (int i = 0; i < size; i++) {
-        cout << " (" << i << "," << answer[i] << ")";
-    }
-    cout << endl;
 }
